@@ -6,12 +6,7 @@
 				<li>
 					<RouterLink to="/">Заявки</RouterLink>
 				</li>
-				<li>
-					<RouterLink to="/help">Помощь</RouterLink>
-				</li>
-				<li>
-					<RouterLink to="/messages">Сообщения</RouterLink>
-				</li>
+
 				<li>
 					<RouterLink to="/login" @click="logout">Выход</RouterLink>
 				</li>
