@@ -1,22 +1,48 @@
 <template>
 	<select :value="modelValue" @change="handleSelect">
-		<option v-for="item in options" :key="item">
-			{{ item }}
+		<option value="" disabled>
+			{{ placeholder || "Выберите опцию" }}
+		</option>
+		<option
+			v-for="option in options"
+			:key="toKey(option)"
+			:value="optionToValue(option)"
+		>
+			{{ optionLabel(option) }}
 		</option>
 	</select>
 </template>
 
-<script setup lang="ts">
+<script
+	setup
+	lang="ts"
+	generic="
+        TOption extends string | Record<string, unknown>,
+        TValue = TOption"
+>
 interface Props {
 	modelValue: string;
-	options: string[];
+	options: TOption[];
+	optionLabel: (option: TOption) => string;
+	optionValue?: (option: TOption) => TValue;
+	placeholder?: string;
 }
-withDefaults(defineProps<Props>(), {
-	modelValue: "",
-});
-const emit = defineEmits<{ (event: "update", value: string): void }>();
+
+const props = defineProps<Props>();
+
+const optionToValue = (option: TOption) => {
+	if (props.optionValue) {
+		return props.optionValue(option);
+	}
+	return option;
+};
+
+const toKey = (option: TOption): string =>
+	JSON.stringify(optionToValue(option));
+
+const emit = defineEmits<{ (event: "on-change", value: TValue): void }>();
 const handleSelect = (event: Event) =>
-	emit("update", (event.target as HTMLSelectElement).value);
+	emit("on-change", (event.target as HTMLSelectElement).value as TValue);
 </script>
 
 <style scoped></style>

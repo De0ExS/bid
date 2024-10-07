@@ -11,15 +11,17 @@ interface Props {
 	label?: string;
 }
 
-const attrs = useAttrs();
 withDefaults(defineProps<Props>(), {
 	modelValue: "",
-	string: "test",
+	name: "test",
 	label: "",
 });
-const emit = defineEmits<{ (event: "update", value: string): void }>();
+
+const attrs = useAttrs();
+
+const emit = defineEmits<{ (event: "on-input", value: string): void }>();
 const handleInput = (event: Event) =>
-	emit("update", (event.target as HTMLInputElement).value);
+	emit("on-input", (event.target as HTMLInputElement).value);
 </script>
 
 <style scoped></style>

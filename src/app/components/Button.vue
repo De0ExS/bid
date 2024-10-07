@@ -1,5 +1,7 @@
 <template>
-	<button>Кнопка</button>
+	<button>
+		<slot></slot>
+	</button>
 </template>
 
 <script setup lang="ts">
